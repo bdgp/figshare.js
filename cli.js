@@ -6,6 +6,7 @@ var through = require('through2')
 if (args._[0] === 'download') {
   var id = args._[1]
   var dir = args._[2] || process.cwd()
+  dir = dir.toString()
   return figshare.get(id, function (err, article) {
     if (err) throw err
     figshare.download(article, dir, args, function (err) {
