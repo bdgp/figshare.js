@@ -27,4 +27,16 @@ if (args._[0] === 'search') {
   })).pipe(process.stdout)
 }
 
-console.log('figshare {search,download}')
+if (args._[0] === 'list') {
+  var text = args._[1]
+  return figshare.list({}).pipe(through.obj(function (data, enc, next) {
+    output = ''
+    for (var i in data.items) {
+      var result = data.items[i]
+      output += result.article_id + ' ' + result.title.replace('<p>', '').replace('</p>', '') + ' \n'
+    }
+    next(null, output)
+  })).pipe(process.stdout)
+}
+
+console.log('figshare {list,search,download}')

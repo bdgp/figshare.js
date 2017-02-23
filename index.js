@@ -3,7 +3,7 @@ var path = require('path')
 var fs = require('fs')
 var got = require('got')
 var extend = require('extend')
-var debug = require('debug')('figshre-search')
+var debug = require('debug')('figshare-search')
 var pager = require('paged-http-stream')
 var through = require('through2')
 var qs = require('querystring')
@@ -122,6 +122,36 @@ Figshare.prototype.search = Figshare.prototype.stream = function (query) {
   }
 
   var opts = self._reqOpts(query)
+  debug('sending to pager', opts, next)
+  return pager(opts, next)
+}
+
+Figshare.prototype._listReqOpts = function (query) {
+  var querystring = qs.stringify({
+    page: query.page
+  })
+  var opts = {
+    method: 'GET',
+    uri: this.uri + '/articles?' + querystring,
+  }
+  return opts
+}
+
+Figshare.prototype.list = function (query) {
+  var self = this
+  query = query || {}
+  query.page = query.page || 1
+
+  function next (data) {
+    if (data.error) throw new Error(data.error)
+    if (data.items.length === 0) return null // we are done here
+    debug("data",data)
+
+    query.page ++
+    return self._listReqOpts(query)
+  }
+
+  var opts = self._listReqOpts(query)
   debug('sending to pager', opts, next)
   return pager(opts, next)
 }

@@ -40,6 +40,21 @@ $ figshare search hello
 1098621 A Beaconless Routing Approach for Energy Conservation in  Wireless Sensor Network
 ```
 
+### figshare list
+
+```
+$ figshare list
+1444470 UGH HATE FIGSHARE
+1444440 Hello
+1351281 <i>Shigella</i> serotypes identified in the study.
+1351279 Distribution of organism identified in children with watery or bloody diarrhea by age group.
+1351282 <i>Salmonella</i> serotypes identified in the study (N = 355).
+1351284 Enteric Bacterial Pathogens in Children with Diarrhea in Niger: Diversity and Antimicrobial Resistance
+1115016 An Adaptive Hello Messaging and Multipath Route  Maintenance in On-Demand MANET Routing Protocol
+1100253 An Energy Efficient Acknowledgement Based Ids For Manet
+1098621 A Beaconless Routing Approach for Energy Conservation in  Wireless Sensor Network
+```
+
 ## JavaScript
 
 ```js
@@ -86,5 +101,14 @@ figshare.download(article, dir, args, function (err) {
 var stream = figshare.stream({fulltext: 'your fulltext query text here'})
 stream.on('data', function (data) {
   console.log(data.items) // each 'data' is a page from the figshare search api
+})
+```
+
+### figshare.list(query)
+
+```js
+var stream = figshare.list()
+stream.on('data', function (data) {
+  console.log(data.items) // each 'data' is a page from the figshare api
 })
 ```
